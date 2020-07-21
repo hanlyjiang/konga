@@ -4,9 +4,10 @@ COPY . /app
 
 WORKDIR /app
 
-RUN apk upgrade --update \
-    && apk add bash git ca-certificates \
-    && npm install -g bower \
+RUN echo -e http://mirrors.ustc.edu.cn/alpine/v3.8/main/ > /etc/apk/repositories \
+    && apk upgrade --update \
+    && apk add bash git ca-certificates python make g++ \
+    && npm --unsafe-perm  install -g bower \
     && npm --unsafe-perm --production install \
     && apk del git \
     && rm -rf /var/cache/apk/* \
@@ -19,3 +20,5 @@ EXPOSE 1337
 VOLUME /app/kongadata
 
 ENTRYPOINT ["/app/start.sh"]
+
+
